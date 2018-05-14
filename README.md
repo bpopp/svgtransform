@@ -12,9 +12,11 @@ Many SVG editors use a transform feature to adjust the size of objects in the ca
 </g>
 ```
 
-When opening this graphic in most viewers/editors, the transform in the `g` element would be used to reduce the x/y coordinates in the d attribute of each `path` and the stroke-width of the `style` attribute by 10% (.1). 
+When opening this graphic in most viewers/editors, the transform in the *g* element would be used to reduce the x/y coordinates in the d attribute of each `path` and the stroke-width of the `style` attribute by 10% `(.1)`. 
 
 Unfortunately, Illustrator CC 2018 has a bug that causes it to correctly resize the `d` attribute and completely ignore the `stroke-width` attribute. 
+
+![Bad SVG](images/badsvg.png) ![Good SVG](images/goodsvg.png)
 
 To work around this bug, I created this PHP class that will remove the transform, and use the x,y ratio to manually adjust both the coordinates and stroke-width of each child `path` element. This allows the graphic to be viewable/editable in Illustrator, but still render correctly in every other editor/viewer (that I've tested).
                                            
