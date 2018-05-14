@@ -20,3 +20,31 @@ Unfortunately, Illustrator CC 2018 has a bug that causes it to correctly resize 
 
 To work around this bug, I created this PHP class that will remove the transform, and use the x,y ratio to manually adjust both the coordinates and stroke-width of each child `path` element. This allows the graphic to be viewable/editable in Illustrator, but still render correctly in every other editor/viewer (that I've tested).
                                            
+### Usage
+Simplest usage would be something like:
+
+```php
+include_once ( "svgtransform.class.php" );
+$fixer = new SVGTransformFix ( $tempDir . "/" . $tempFile );
+$out =  $fixer->Transform();   // returns transformed SVG in a string
+```
+
+Or in a batch
+
+```php
+include_once ( "svgtransform.class.php" );
+foreach (new DirectoryIterator($tempIn ) as $fileInfo)
+{
+    if($fileInfo->isDot()) continue;
+    if($fileInfo->getExtension() != "svg" ) continue;
+
+    $fixer = new SVGTransformFix ( $tempIn . "/" . $fileInfo->getFilename() );
+    $out =  $fixer->Transform();
+
+    if ( $out );
+    {
+        new dbug ( "Writing " . $fileInfo->getFilename() );
+        file_put_contents ( $tempOut . "/" . $fileInfo->getFilename(), $out );
+    }
+}
+```
